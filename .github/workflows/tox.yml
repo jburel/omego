@@ -37,12 +37,14 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: python -mpip install --upgrade wheel pytest tox
-      - name: Set upgrade
+      - name: Set up
         run: |
           mkdir $HOME/OMERO
           echo "config set omero.data.dir $HOME/OMERO" > $HOME/config.omero
           echo "config set omero.db.name omero" >> $HOME/config.omero
           echo "config set Ice.IPv6 0" >> $HOME/config.omero
+      - name: Install
+        run: ./travis-install
       - name: Get tox target
         id: toxtarget
         run: |
