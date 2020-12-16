@@ -1,0 +1,57 @@
+---
+name: Tox
+on:
+  schedule:
+    - cron: '0 0 * * 0'
+  push:
+  pull_request:
+
+jobs:
+  test:
+    name: Run tox tests
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.6']
+        commands: ['upgrade', 'install']
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:9.6
+        env:
+          POSTGRES_DB: omero        
+          POSTGRES_PASSWORD: omero
+          POSTGRES_USER: omero
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: python -mpip install --upgrade wheel pytest tox
+      - name: Set upgrade
+        run: |
+          mkdir $HOME/OMERO
+          echo "config set omero.data.dir $HOME/OMERO" > $HOME/config.omero
+          echo "config set omero.db.name omero" >> $HOME/config.omero
+          echo "config set Ice.IPv6 0" >> $HOME/config.omero
+      - name: Get tox target
+        id: toxtarget
+        run: |
+          py=$(echo ${{ matrix.python-version }} | tr -d .)
+          echo "::set-output name=py::$py"
+      - name: Run tests
+        run: tox -e py${{ steps.toxtarget.outputs.py }}
+        env:
+          # The hostname used to communicate with the PostgreSQL service container
+          POSTGRES_HOST: localhost
+          # The default PostgreSQL port
+          POSTGRES_PORT: 5432
