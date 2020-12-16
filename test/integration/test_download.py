@@ -34,6 +34,7 @@ class Downloader(object):
         self.artifact = None
 
     def download(self, *args):
+        print(list(args))
         args = ["download", self.artifact] + list(args)
         main("omego", args=args, items=[("download", DownloadCommand)])
 
