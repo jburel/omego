@@ -89,11 +89,11 @@ class TestDownload(Downloader):
             assert sym2 == (old_div(tmpdir, 'custom.sym'))
             assert sym2.isdir()
 
-    def testDownloadRelease(self, tmpdir):
-        with tmpdir.as_cwd():
-            self.download('--release', 'latest', '--ice', self.ice)
-            files = tmpdir.listdir()
-            assert len(files) == 2
+    # def testDownloadRelease(self, tmpdir):
+    #    with tmpdir.as_cwd():
+    #        self.download('--release', 'latest', '--ice', self.ice)
+    #        files = tmpdir.listdir()
+    #        assert len(files) == 2
 
     def testDownloadNonExistingArtifact(self):
         with pytest.raises(AttributeError):
