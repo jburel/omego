@@ -50,20 +50,18 @@ class TestUpgrade(object):
             self.upgrade("--skipunzip")
 
     @pytest.mark.slowtest
-    @pytest.mark.skipif(True, reason='URL to be updated')
     def testUpgrade(self):
-        args = ["--branch=OMERO-DEV-latest"]
+        args = ["--branch=latest-ci"]
         # Python 3.6 on Travis: Force OMERO to run with 2.7 instead
         if getenv('TRAVIS_PYTHON_VERSION') == '3.6':
             args += ['--python', 'python2.7']
         self.upgrade(*args)
 
     @pytest.mark.slowtest
-    @pytest.mark.skipif(True, reason='OMERO not supported on Python 3.6')
     def testUpgradePython3(self):
-        self.upgrade("--branch=OMERO-DEV-latest")
+        self.upgrade("--branch=latest-ci")
 
     @pytest.mark.slowtest
     @pytest.mark.skipif(True, reason='Broken due to multiple CLI import')
     def testUpgradeMatrixBuild(self):
-        self.upgrade("--branch=OMERO-DEV-latest", "--ice=3.6")
+        self.upgrade("--branch=latest-ci", "--ice=3.6")
