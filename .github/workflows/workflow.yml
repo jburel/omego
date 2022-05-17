@@ -20,6 +20,7 @@ jobs:
           - ubuntu-20.04
         commands:
           - 'install'
+          - 'upgrade'
     runs-on: ${{ matrix.os }}
     services:
       postgres:
