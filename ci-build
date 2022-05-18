@@ -37,6 +37,7 @@ if [ $TEST = upgrade ]; then
   omego download --release 5.3 --ice 3.6 server
   ln -s OMERO.server-5.3.5-ice36-b73 OMERO.server;
 
+  export OMERODIR='./OMERO.server'
   # Should return 3 DB_INIT_NEEDED
   RC=0;
   omego db upgrade -n --dbname omero --serverdir OMERO.server || RC=$?
