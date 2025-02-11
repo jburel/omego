@@ -23,7 +23,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     services:
       postgres:
-        image: postgres:11
+        image: postgres:16
         env:
           POSTGRES_DB: omero
           POSTGRES_PASSWORD: omero
