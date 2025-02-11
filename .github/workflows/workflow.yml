@@ -17,7 +17,7 @@ jobs:
         python-version:
           - '3.8'
         os:
-          - ubuntu-20.04
+          - ubuntu-latest
         commands:
           - 'install'
     runs-on: ${{ matrix.os }}
